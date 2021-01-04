@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="scan_topic"  default="/kobuki/laser/scan" />
+  <arg name="base_frame"  default="base_link"/>
+  <arg name="odom_frame"  default="odom"/>
+
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <rosparam file="$(find navigation)/params/mapping.yaml" command="load" />
+    <remap from="scan" to="$(arg scan_topic)"/>
+  </node>
+</launch>

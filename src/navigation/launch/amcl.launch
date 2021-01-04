@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!--- Run AMCL -->
+  <node pkg="amcl" type="amcl" name="amcl">
+    <rosparam file="$(find navigation)/params/amcl.yaml" command="load" />
+  </node>
+
+</launch>
