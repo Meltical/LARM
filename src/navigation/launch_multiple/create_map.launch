@@ -1,0 +1,8 @@
+<launch>
+    <!-- gmapping -->
+    <include file="$(find navigation)/launch/gmapping.launch" />
+    <!-- amcl -->
+    <include file="$(find navigation)/launch/amcl.launch" />
+    <!-- move_base -->
+    <include file="$(find navigation)/launch/move_base.launch" />
+</launch>
