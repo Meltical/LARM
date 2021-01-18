@@ -23,7 +23,7 @@ class LoadFeature(object):
             print(e)
         
 
-        image_1 = cv2.imread('/home/user/catkin_ws/src/vision/coke_can.jpg',1)
+        image_1 = cv2.imread('/home/user/catkin_ws/src/vision/coke.png',1)
         image_2 = cv_image
         
         image_1 = cv2.resize(cv_image,(300,200))
@@ -86,7 +86,15 @@ class LoadFeature(object):
         dst = cv2.perspectiveTransform(pts,M)
 
         # Draw the points of the new perspective in the result image (This is considered the bounding box)
-        result = cv2.polylines(image_2, [np.int32(dst)], True, (50,0,255),3, cv2.LINE_AA)
+        # result = cv2.polylines(image_2, [np.int32(dst)], True, (50,0,255),3, cv2.LINE_AA)
+        
+        hog = cv2.HOGDescriptor()
+        boxes, weights = hog.detectMultiScale(image_2, winStride=(8,8))
+        boxes = np.array([[x, y, x + w, y + h] for (x, y, w, h) in boxes])
+
+        
+        for (xA, yA, xB, yB) in boxes:
+            cv2.rectangle(image_2, (xA, yA), (xB, yB),(255, 255, 0), 2)
 
         cv2.imshow('Img',image_1)
 
