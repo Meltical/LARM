@@ -34,7 +34,9 @@ source devel/setup.bash
 
 - WebShell #2 : `roslaunch challenge challenge-1.1.launch`
 
-- WebShell #3 `rviz`
+- WebShell #3 : `rviz`
+
+- Dans rviz : File -> Open Config -> Open "/home/user/catkin_ws/rviz/map.rviz"
 
 - Naviguer avec la carte dans rviz...
 
@@ -42,7 +44,9 @@ source devel/setup.bash
 
 - WebShell #2 : `roslaunch challenge challenge-1.2.launch`
 
-- WebShell #3 `rviz`
+- WebShell #3 : `rviz`
+
+- Dans rviz : File -> Open Config -> Open "/home/user/catkin_ws/rviz/map.rviz"
 
 - Naviguer sans la carte dans rviz...
 
@@ -52,7 +56,11 @@ source devel/setup.bash
 
 - WebShell #2 : `roslaunch challenge challenge-2.launch`
 
-- WebShell #3 `rviz`
+- WebShell #3 : `rviz`
+
+- Dans rviz : File -> Open Config -> Open "/home/user/catkin_ws/rviz/map.rviz"
+
+- Naviguer dans rviz pour trouver toutes les bouteilles
 
 ### Résultat attendu : La position approximative de la bouteille apparait dans le WebShell #2 :
 
