@@ -6,7 +6,8 @@ Victor DELIEGE & Arthur VERGAERT - Gr 15
 - Créer un ROSJect Kinetic
 
 - Dans un WhebShell : 
-```rm -rf ~/catkin_ws
+```
+rm -rf ~/catkin_ws
 rm -rf ~/simulation_ws
 git clone https://github.com/MikUwU/LARM.git ~/catkin_ws
 git clone https://github.com/ceri-num/LARM-RDS-Simulation-WS.git ~/simulation_ws
