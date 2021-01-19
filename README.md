@@ -5,7 +5,7 @@ Victor DELIEGE & Arthur VERGAERT - Gr 15
 
 - Créer un ROSJect Kinetic
 
-- Dans un WhebShell : 
+- Dans WhebShell #1 : 
 ```
 rm -rf ~/catkin_ws
 rm -rf ~/simulation_ws
@@ -16,6 +16,13 @@ catkin_make
 source devel/setup.bash
 cd ~/simulation_ws/
 catkin_make
+source devel/setup.bash
+```
+- Dans WebShell #2 et #3 :
+```
+cd ~/catkin_ws/
+source devel/setup.bash
+cd ~/simulation_ws/
 source devel/setup.bash
 ```
 
