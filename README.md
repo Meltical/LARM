@@ -6,7 +6,7 @@ Victor DELIEGE & Arthur VERGAERT - Gr 15
 - Créer un ROSJect Kinetic
 
 - Dans WhebShell #1 : 
-```
+```bash
 rm -rf ~/catkin_ws
 rm -rf ~/simulation_ws
 git clone https://github.com/MikUwU/LARM.git ~/catkin_ws
@@ -19,7 +19,7 @@ catkin_make
 source devel/setup.bash
 ```
 - Dans WebShell #2 et #3 :
-```
+```bash
 cd ~/catkin_ws/
 source devel/setup.bash
 cd ~/simulation_ws/
