@@ -7,8 +7,7 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseActionFeedback
 
 def my_callback(request):
     global pose_result
-    print "[ BOTTLE ] Found at :"
-    print pose_result
+    pub.publish(pose_result)
     return EmptyResponse()
 
 def move_base_pose_callback(msg):
@@ -17,6 +16,7 @@ def move_base_pose_callback(msg):
 
 rospy.init_node('service_server') 
 my_service = rospy.Service('/bottle', Empty , my_callback)
+pub = rospy.Publisher('/bottle', Pose, queue_size=1)
 pose_result = Pose()
 pose_sub = rospy.Subscriber('/move_base/feedback', MoveBaseActionFeedback, move_base_pose_callback)
 rospy.spin()
