@@ -30,7 +30,7 @@ cd ~/simulation_ws/
 source devel/setup.bash
 ```
 
-# Challenge 1
+# Challenge 1 : Navigation avec et sans map
 
 - WebShell #1 : `roslaunch larm challenge-1.launch`
 
@@ -54,7 +54,7 @@ source devel/setup.bash
 
 - Naviguer sans la carte dans rviz. Utiliser l'outil 2D Nav Goal.
 
-# Challenge 2
+# Challenge 2 : Navigation sans map et détection d'objets
 
 - WebShell #1 : `roslaunch larm challenge-2.launch`
 
@@ -70,7 +70,7 @@ source devel/setup.bash
 
 La position approximative de la bouteille est publiée dans le topic /bottle. On peut le visualiser en ouvrant un nouveau WebShell avec : `rostopic echo /bottle`
 
-# Challenge 3
+# Challenge 3 : Exploration autonome et détection d'objets
 
 - WebShell #1 : `roslaunch larm challenge-3.launch`
 
@@ -82,9 +82,23 @@ La position approximative de la bouteille est publiée dans le topic /bottle. On
 
 - Naviguer dans rviz pour trouver toutes les bouteilles. Utiliser l'outil "Publish Point" pour dessiner une zone dans laquelle le robot va explorer. Une fois la zone fermée, donner un dernier point à l'intérieur de celle-ci correspondant au point de départ au robot.
 
-<center> <img src="https://raw.githubusercontent.com/MikUwU/LARM/main/frontier_exploration.gif" height="250" />
-</center>
+<img src="https://raw.githubusercontent.com/MikUwU/LARM/main/frontier_exploration.gif" height="250" />
 
 ### Résultat attendu
 
 La position approximative de la bouteille est publiée dans le topic /bottle. On peut le visualiser en ouvrant un nouveau WebShell avec : `rostopic echo /bottle`
+
+
+# Difficultés Rencontrées
+
+- La détection de la bouteille se fait avec un masque rouge et peut ne pas prendre toute la bouteille en compte. Ce qui rend la tentative de localisation aléatoire.
+
+- L'exploration du robot fonction grace à la map qu'il réalise en simultané (SLAM Gmapping). Parfois cette carte ne s'actualise pas assez rappidement pour le robot et il peut se retrouver coincer dans un mur. (Même après avoir modifié certains paramètres comme `map_update_interval`, `linearUpdate`, `angularUpdate`...)
+
+- La localisation de la bouteille est calculé par un simple calcul de proportion de la bouteille et évaluant la distance entre celle-ci et le robot. Cette façon de faire à des limites : lorsque la bouteille est couchée, ou si une partie de celle-ci est cachée par exemple.
+
+# Conclusion
+
+C'était cool, aurait été mieux en présentiel... 
+
+<img src="https://media1.tenor.com/images/8d4dd8f52d9a25d73f44c61dc9ec3b99/tenor.gif?itemid=15871940" height="50"/>
