@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from std_srvs.srv import Empty
+from geometry_msgs.msg import Point
+from rospy_tutorials.srv import AddTwoInts, AddTwoIntsResponse
 
 
 class LoadFeature(object):
@@ -14,7 +16,7 @@ class LoadFeature(object):
     
         self.image_sub = rospy.Subscriber("/camera/rgb/image_raw",Image,self.camera_callback)
         self.bridge_object = CvBridge()
-        self.bottle_found = rospy.ServiceProxy('/bottle', Empty)
+        self.bottle_found = rospy.ServiceProxy('/bottle_service', AddTwoInts)
 
     def camera_callback(self,data):
         try:
@@ -31,24 +33,21 @@ class LoadFeature(object):
         image_2 = cv2.resize(image_2,(300,200))
 
         # Creating a red mask to only see the red
-        min_red = np.array([40,0,0])
+        min_red = np.array([60,0,0])
         max_red = np.array([255,200,200])
         hsv = cv2.cvtColor(image_2, cv2.COLOR_BGR2HSV)
         mask_r = cv2.inRange(hsv, min_red, max_red)
 
-        cv2.imwrite('/home/user/catkin_ws/src/vision/ressources/image_1.jpg',image_1)
-        cv2.imwrite('/home/user/catkin_ws/src/vision/ressources/image_2.jpg',image_2)
-        cv2.imwrite('/home/user/catkin_ws/src/vision/ressources/mask_r.jpg',mask_r)
         #Initialize the ORB Feature detector 
         orb = cv2.ORB_create(nfeatures = 1000)
+
+        # Red filter on the picture
+        res_r = cv2.bitwise_and(image_2, image_2, mask= mask_r)
 
         #Make a copy of the original image to display the keypoints found by ORB
         #This is just a representative
         preview_1 = np.copy(image_1)
-        preview_2 = np.copy(image_2)
-
-        # Red filter on the picture
-        res_r = cv2.bitwise_and(preview_2, preview_2, mask= mask_r)
+        preview_2 = np.copy(res_r)
       
         #Create another copy to display points only
         dots = np.copy(image_1)
@@ -61,17 +60,17 @@ class LoadFeature(object):
         cv2.drawKeypoints(image_1, train_keypoints, preview_1, flags = cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
         cv2.drawKeypoints(image_1, train_keypoints, dots, flags=2)
 
-        #############################################
-        ################## MATCHER ##################
-        #############################################
-
-        #Initialize the BruteForce Matcher
-        bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck = True)
-
-        #Match the feature points from both images
         try:
+            #############################################
+            ################## MATCHER ##################
+            #############################################
+
+            #Initialize the BruteForce Matcher
+            bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck = True)
+
+            #Match the feature points from both images
             matches = bf.match(train_descriptor, test_descriptor)
-            self.bottle_found()
+            
             #The matches with shorter distance are the ones we want.
             matches = sorted(matches, key = lambda x : x.distance)
         
@@ -95,15 +94,39 @@ class LoadFeature(object):
 
             #Create the perspective in the result 
             dst = cv2.perspectiveTransform(pts,M)
+
+            cv2.imshow('Img',image_2)
+            cv2.imshow('Points',preview_1)
+            cv2.imshow('Detection',res_r)       
         except:
-            print "No bottle"
+            pass
+        else:
+            hsv = cv2.cvtColor(image_2, cv2.COLOR_BGR2HSV)
+            h,s,v= cv2.split(hsv)
+            ret, th = cv2.threshold(h,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
-        cv2.imshow('Img',image_1)
+            # Remplissage des contours (quivalent  un oprateur morpho de Fermeture)
+            im_floodfill = th.copy()
+            h, w = th.shape[:2]
+            mask = np.zeros((h+2, w+2), np.uint8)
+            cv2.floodFill(im_floodfill, mask, (0,0), 255)
+            im_floodfill_inv = cv2.bitwise_not(im_floodfill)
+            th = th | im_floodfill_inv
 
-        cv2.imshow('Points',preview_1)
+
+            # Dtection des objets
+            img_final, contours, hierarchy = cv2.findContours(th,cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            for i in range (0, len(contours)) :
+                mask_BB_i = np.zeros((len(th),len(th[0])), np.uint8)
+                x,y,w,h = cv2.boundingRect(contours[i])
+                cv2.drawContours(mask_BB_i, contours, i, (255,255,255), -1)
+                BB_i=cv2.bitwise_and(res_r,res_r,mask=mask_BB_i)
+                cv2.imshow('mask_BB_i',mask_BB_i)   
+            print("--------------")
+            print("h: " + str(h))
+            print("w: " + str(w))
+            self.bottle_found(h, w)
         
-        cv2.imshow('Detection',image_2)       
-
         cv2.waitKey(1)
 
     def prove(self):
@@ -116,7 +139,7 @@ def main():
     load_feature_object = LoadFeature()
     rospy.init_node('load_feature_node', anonymous=True)
     
-    load_feature_object.prove()
+    # load_feature_object.prove()
     try:
         rospy.spin()
         
