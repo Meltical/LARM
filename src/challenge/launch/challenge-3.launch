@@ -4,6 +4,8 @@
         <include file="$(find navigation)/launch/gmapping.launch" />
         <!-- move_base -->
         <include file="$(find navigation)/launch/move_base.launch" />
+        <!-- frontier_exploration -->
+        <include file="$(find frontier_exploration)/launch/global_map.launch" />
     <!-- BOTTLE -->
         <!-- bottle service server -->
         <node 
