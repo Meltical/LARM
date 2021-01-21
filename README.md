@@ -95,7 +95,7 @@ La position approximative de la bouteille est publiée dans le topic /bottle. On
 
 - L'exploration du robot fonctionne grâce à la map qu'il réalise en simultané (SLAM Gmapping). Parfois cette carte ne s'actualise pas assez rapidement pour le robot et il peut se retrouver coincé dans un mur. (Même après avoir modifié certains paramètres comme `map_update_interval`, `linearUpdate`, `angularUpdate`...)
 
-- La localisation de la bouteille est calculée par un simple calcul de proportion de la bouteille et en évaluant la distance entre celle-ci et le robot. Cette façon de faire à des limites : lorsque la bouteille est couchée, ou si une partie de celle-ci est cachée par exemple.
+- La localisation de la bouteille est calculée par un simple calcul de proportion de la bouteille et en évaluant la distance entre celle-ci et le robot. Cette façon de faire à des limites : lorsqu'une partie de la bouteille est cachée par exemple.
 
 # Conclusion
 
