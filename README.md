@@ -6,7 +6,7 @@ Victor DELIEGE & Arthur VERGAERT - Gr 15
 
 - Créer un ROSJect Kinetic
 
-- Dans WhebShell #1 :
+- Dans WebShell #1 :
 
 ```bash
 rm -rf ~/catkin_ws
